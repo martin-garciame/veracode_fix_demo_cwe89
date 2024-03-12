@@ -1,0 +1,33 @@
+  https://github.com/oseduardo/veracode_fix_demo_cwe89  
+  
+cd /mnt/c/Users/martin.garcia/'OneDrive - Información Segura SA de CV'/'Martin Garcia'/Documentos/Veracode/Demos/veracode_fix_demo_cwe89
+
+code .
+
+
+
+/home/veracode configure
+
+
+# -- TO RUN ALL COMANDS IT'S NECCESARY TO BE ON 'source' FOLDER
+# -- IT A PRE-REQUISITE TO HAVE THE VERACODE CLI TOOL REFERENCED IN $PATH ENVIRONMENT VARIABLE, SO YOU CAN INVOKE IT FROM WHEREVER FOLDER IN YOUR LAPTOP
+# -- IT A PRE-REQUISITE TO HAVE INSTALLED PIPELINE SCAN TOOL. RUNNING PIPELINE SCAN IN YOUR DEMO WILL DEPEND WHERE YOU HAVE INSTALLED IT
+
+# -- Compile
+javac -g source/SQLvulnerability.java
+
+# -- Run SAST (Static Scan from Veracode CLI) - This command will depend on the location you have installed Veracode CLI
+# -- In my case I have Veracode CLI installed in my veracode tools folder '~/tools/veracode'. I have referenced the Veracode CLI executable (veracode) in PATH variable
+# -- Static Scan will generate the results.json file you will invoke when calling Veracode Fix
+# -- Static Scan will generate and will include stack dumps information of java app in results.json file
+
+/home/veracode static scan source/SQLvulnerability.class
+
+# -- Run fix
+/home/veracode fix --results results.json source/SQLvulnerability.java
+
+# -- Recompile
+javac -g source/SQLvulnerability.java
+
+# -- Run SAST (Static Scan from Veracode CLI) on new class file
+/home/veracode static scan source/SQLvulnerability.class
